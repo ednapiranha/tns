@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    title tns
+    meta(charset='utf-8')
+    meta(content='width=device-width, height=device-height, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0', name='viewport')
+    meta(content='yes', name='apple-mobile-web-app-capable')
+    <link rel="stylesheet" href="/tns.css">
+  body
+    #wrapper
+      h1 Yeah forms. No fancy shit here.
+      form(method='post', action='/post')
+        input(type='text', name='message', placeholder='whatever you want to say.')
+        button(type='submit') add message
+
+      #messages
+        if tag.length
+          h2= 'tag: ' + tag
+          for m in messages
+            p!= m.tagged.join('')
+        else
+          h2 recent
+          for m in messages
+            p!= m.tagged.join('')

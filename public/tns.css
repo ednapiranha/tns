@@ -1,0 +1,12 @@
+body {
+  background-color: rgba(240, 5, 110, 1.0);
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 2rem;
+}
+
+input[type=text] {
+  width: 80vw;
+  padding: 0.2rem;
+  border: 1px solid #f0f;
+  font-size: 1rem;
+}
