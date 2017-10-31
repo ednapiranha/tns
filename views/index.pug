@@ -8,17 +8,26 @@ html
     <link rel="stylesheet" href="/tns.css">
   body
     #wrapper
-      h1 Yeah forms. No fancy shit here.
-      form(method='post', action='/post')
-        input(type='text', name='message', placeholder='whatever you want to say.')
-        button(type='submit') add message
+      #flappy
+        h1 The Non Sequitur
+        p Welcome to TNS. This project is probably older than the time you spent at your first job plus your second job.
+        p Post whatever you're feeling or wanting to rant about. Keep it somewhat classy. I mean, you can swear or talk about toilet humor but don't be a total shitcreep.
+        p Whatever you write will be anonymous, so try to be a responsible adult childperson.
+        p You do you.
+        p Anyway, enjoy.
 
       #messages
         if tag.length
           h2= 'tag: ' + tag
+
           for m in messages
             p!= m.tagged.join('')
+
         else
           h2 recent
           for m in messages
             p!= m.tagged.join('')
+
+      form(method='post', action='/post')
+        input(type='text', name='message', placeholder='whatever you want to say.')
+        button(type='submit') add message

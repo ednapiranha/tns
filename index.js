@@ -76,12 +76,19 @@ app.get('/tag/:tag', (req, res) => {
 
 app.post('/post', (req, res) => {
   const mId = uuid.v4()
-  const message = sanitize(req.body.message.trim())
+  let message = sanitize(req.body.message.trim())
+  const messageArr = message.split(' ')
   const tags = tokenizer.tokenize(message)
 
-  const taggedMsg = tags.map((tag) => {
-    return '<a href="/tag/' + encodeURIComponent(tag.toLowerCase()) + '">' + tag + '</a> '
-  })
+  const taggedMsg = []
+
+  for (let i = 0; i < messageArr.length; i++) {
+    const msg = sanitize(messageArr[i])
+
+    if (msg.length) {
+      taggedMsg.push('<a href="/tag/' + encodeURIComponent(tags[i]) + '">' + msg + '</a>')
+    }
+  }
 
   let batch = [
     {
