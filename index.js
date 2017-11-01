@@ -5,12 +5,8 @@ const session = require('express-session')
 const SessionDB = require('level-session-store')(session)
 const bodyParser = require('body-parser')
 const level = require('level')
-const natural = require('natural')
 const uuid = require('uuid')
-const sanitize = require('sanitize-html')
 const concat = require('concat-stream')
-
-const tokenizer = new natural.WordTokenizer()
 
 const db = level('./db/messages', {
   createIfMissing: true,
@@ -76,49 +72,52 @@ app.get('/tag/:tag', (req, res) => {
 
 app.post('/post', (req, res) => {
   const mId = uuid.v4()
-  let message = sanitize(req.body.message.trim())
-  const messageArr = message.split(' ')
-  const tags = tokenizer.tokenize(message)
-
-  const taggedMsg = []
-
-  for (let i = 0; i < messageArr.length; i++) {
-    const msg = sanitize(messageArr[i])
-
-    if (msg.length) {
-      taggedMsg.push('<a href="/tag/' + encodeURIComponent(tags[i]) + '">' + msg + '</a>')
+  const message = req.body.message.trim()
+  const tags = message.split(' ').map((tag) => {
+    return {
+      tag: tag.replace(/[^A-Z0-9_-]+/gi, '').toLowerCase(),
+      text: tag.replace(/>+/gi, '&gt;').replace(/<+/gi, '&lt;').replace(/"+/gi, '&quot;')
     }
-  }
+  })
 
-  let batch = [
-    {
-      type: 'put',
-      key: 'message~' + mId + '~' + Date.now(),
-      value: {
-        original: message,
-        tagged: taggedMsg,
-        created: Date.now()
-      }
-    }
-  ]
+  const taggedMsg = tags.map((tag, idx) => {
+    return '<a href="/tag/' + encodeURIComponent(tag.tag) + '">' + tag.text + '</a>'
+  })
 
-  tags.map((tag) => {
-    batch.push({
-      type: 'put',
-      key: 'tagged~' + tag.toLowerCase() + '~' + mId + '~' + Date.now(),
-      value: {
-        original: message,
-        tagged: taggedMsg,
-        created: Date.now()
+  if (taggedMsg.length) {
+    let batch = [
+      {
+        type: 'put',
+        key: 'message~' + mId + '~' + Date.now(),
+        value: {
+          original: message,
+          tagged: taggedMsg,
+          created: Date.now()
+        }
       }
+    ]
+
+    tags.map((tag) => {
+      batch.push({
+        type: 'put',
+        key: 'tagged~' + tag.tag.toLowerCase() + '~' + mId + '~' + Date.now(),
+        value: {
+          original: message,
+          tagged: taggedMsg,
+          created: Date.now()
+        }
+      })
     })
-  })
 
-  db.batch(batch, (err) => {
-    if (err) {
-      console.log('DATABASE SAVE ERROR: ', err)
-    }
+    db.batch(batch, (err) => {
+      if (err) {
+        console.log('DATABASE SAVE ERROR: ', err)
+      }
 
+      res.redirect('/')
+    })
+  } else {
+    console.log('nothing saved')
     res.redirect('/')
-  })
+  }
 })
