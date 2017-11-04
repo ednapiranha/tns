@@ -36,7 +36,7 @@ html
                 a(href='/m/' + m.key.split('~')[1] + '~' + m.key.split('~')[2])= m.value.created
               p!= m.value.tagged.join('')
               if m.value.media.length
-                img(src=m.media)
+                img(src=m.value.media)
 
         else
           h2 recent
