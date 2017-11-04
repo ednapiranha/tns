@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, '/public')))
 
 const server = http.createServer(app)
-server.listen(process.env.PORT || 3000)
+server.listen(process.env.PORT || 8000)
 
 app.get('/', (req, res) => {
   const rs = db.createValueStream({
