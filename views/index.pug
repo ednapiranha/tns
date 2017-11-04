@@ -45,6 +45,6 @@ html
                 img(src=m.media)
 
     form(method='post', action='/post')
-      input(type='text', name='message', placeholder='TEXT here: Whatever you want to post.')
-      input(type='text', name='media', placeholder='URL here: Giphy URLs only for now.')
+      input(type='text', name='message', placeholder='*TEXT: Whatever you want to post.', required)
+      input(type='text', name='media', placeholder='URL: Giphy URLs only for now.')
       button(type='submit') add message
