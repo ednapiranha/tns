@@ -142,12 +142,21 @@ time {
   max-width: 90vw;
 }
 
-#messages a {
-  background-color: rgba(1, 1, 1, 0.8);
-  padding: 2px 7px;
-  margin: 1px;
+#messages a, #messages span {
   font-size: 1.4rem;
+  line-height: 1.5rem;
+}
+
+#messages span {
+  padding: 2px 3px;
+  margin: 1px 0;
+}
+
+#messages a {
+  padding: 2px 7px;
+  background-color: rgba(1, 1, 1, 0.8);
   border-radius: 1px;
+  margin: 1px;
   color: rgba(200, 200, 200, 0.9);
   text-decoration: none;
 }

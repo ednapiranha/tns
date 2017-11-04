@@ -74,14 +74,27 @@ app.post('/post', (req, res) => {
   }
 
   const tags = message.split(' ').map((tag) => {
-    return {
-      tag: tag.replace(/[^A-Z0-9_-]+/gi, '').toLowerCase(),
-      text: tag.replace(/>+/gi, '&gt;').replace(/<+/gi, '&lt;').replace(/"+/gi, '&quot;')
+    const tagStr = tag.replace(/[^A-Z0-9_-]+/gi, '').toLowerCase()
+
+    if (tagStr.length) {
+      return {
+        tag: tagStr,
+        text: tag.replace(/>+/gi, '&gt;').replace(/<+/gi, '&lt;').replace(/"+/gi, '&quot;')
+      }
+    } else {
+      return {
+        tag: '',
+        text: tag.replace(/>+/gi, '&gt;').replace(/<+/gi, '&lt;').replace(/"+/gi, '&quot;')
+      }
     }
   })
 
   const taggedMsg = tags.map((tag, idx) => {
-    return '<a href="/tag/' + encodeURIComponent(tag.tag) + '">' + tag.text + '</a>'
+    if (tag.tag.length) {
+      return '<a href="/tag/' + encodeURIComponent(tag.tag) + '">' + tag.text + '</a>'
+    } else {
+      return '<span>' + tag.text + '</span>'
+    }
   })
 
   if (message.length && tags.length) {
@@ -99,16 +112,18 @@ app.post('/post', (req, res) => {
     ]
 
     tags.map((tag) => {
-      batch.push({
-        type: 'put',
-        key: 'tagged~' + tag.tag.toLowerCase() + '~' + mId + '~' + Date.now(),
-        value: {
-          original: message,
-          tagged: taggedMsg,
-          media: media || '',
-          created: Date.now()
-        }
-      })
+      if (tag.length) {
+        batch.push({
+          type: 'put',
+          key: 'tagged~' + tag.tag.toLowerCase() + '~' + mId + '~' + Date.now(),
+          value: {
+            original: message,
+            tagged: taggedMsg,
+            media: media || '',
+            created: Date.now()
+          }
+        })
+      }
     })
 
     db.batch(batch, (err) => {
