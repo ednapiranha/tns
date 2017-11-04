@@ -26,68 +26,13 @@ app.get('/', (req, res) => {
   const rs = db.createValueStream({
     gte: 'message~',
     lte: 'message~\xff',
-    limit: 50,
-    reverse: true
+    limit: 50
   })
 
   rs.pipe(concat((messages) => {
-    console.log('msgs: ', messages)
     res.render('index', {
       messages: messages,
       tag: ''
-    })
-
-    messages.map((m) => {
-      const mId = uuid.v4()
-      const message = m.original
-      const tags = message.split(' ').map((tag) => {
-        const tagStr = tag.replace(/[^A-Z0-9_-]+/gi, '').toLowerCase()
-
-        if (tagStr.length) {
-          return {
-            tag: tagStr,
-            text: tag.replace(/>+/gi, '&gt;').replace(/<+/gi, '&lt;').replace(/"+/gi, '&quot;')
-          }
-        } else {
-          return {
-            tag: '',
-            text: tag.replace(/>+/gi, '&gt;').replace(/<+/gi, '&lt;').replace(/"+/gi, '&quot;')
-          }
-        }
-      })
-
-      const taggedMsg = tags.map((tag, idx) => {
-        if (tag.tag.length) {
-          return '<a href="/tag/' + encodeURIComponent(tag.tag) + '">' + tag.text + '</a>'
-        } else {
-          return '<span>' + tag.text + '</span>'
-        }
-      })
-
-      if (message.length && tags.length) {
-        let batch = []
-
-        tags.map((tag) => {
-          if (tag.tag.length) {
-            batch.push({
-              type: 'put',
-              key: 'tagged~' + tag.tag.toLowerCase() + '~' + mId + '~' + Date.now(),
-              value: {
-                original: message,
-                tagged: taggedMsg,
-                media: m.media || '',
-                created: Date.now()
-              }
-            })
-          }
-        })
-
-        db.batch(batch, (err) => {
-          if (err) {
-            console.log('DATABASE SAVE ERROR: ', err)
-          }
-        })
-      }
     })
   }))
 
@@ -101,8 +46,7 @@ app.get('/tag/:tag', (req, res) => {
   const rs = db.createValueStream({
     gte: 'tagged~' + tag + '~',
     lte: 'tagged~' + tag + '~\xff',
-    limit: 50,
-    reverse: true
+    limit: 50
   })
 
   rs.pipe(concat((messages) => {
