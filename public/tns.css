@@ -136,6 +136,7 @@ time {
 
 .message p {
   margin: 2px 0;
+  display: block;
 }
 
 #messages img {
@@ -145,6 +146,7 @@ time {
 #messages a, #messages span {
   font-size: 1.4rem;
   line-height: 1.5rem;
+  display: inline-block;
 }
 
 #messages span {
@@ -153,7 +155,7 @@ time {
 }
 
 #messages a {
-  padding: 2px 7px;
+  padding: 1px 7px;
   background-color: rgba(1, 1, 1, 0.8);
   border-radius: 1px;
   margin: 1px;
