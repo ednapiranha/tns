@@ -1,8 +1,6 @@
 const http = require('http')
 const path = require('path')
 const express = require('express')
-const session = require('express-session')
-const SessionDB = require('level-session-store')(session)
 const bodyParser = require('body-parser')
 const level = require('level')
 const uuid = require('uuid')
@@ -13,16 +11,10 @@ const db = level('./db/messages', {
   valueEncoding: 'json'
 })
 
-const sess = session({
-  store: new SessionDB('./db/sessions'),
-  secret: process.env.SESSION
-})
-
 const app = express()
 
 app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, 'views'))
-app.use(sess)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, '/public')))
@@ -73,6 +65,12 @@ app.get('/tag/:tag', (req, res) => {
 app.post('/post', (req, res) => {
   const mId = uuid.v4()
   const message = req.body.message.trim()
+  let media = req.body.media && req.body.media.trim()
+
+  if (!media.match(/^https:\/\/\w*\.giphy\.com/i)) {
+    media = ''
+  }
+
   const tags = message.split(' ').map((tag) => {
     return {
       tag: tag.replace(/[^A-Z0-9_-]+/gi, '').toLowerCase(),
@@ -84,7 +82,7 @@ app.post('/post', (req, res) => {
     return '<a href="/tag/' + encodeURIComponent(tag.tag) + '">' + tag.text + '</a>'
   })
 
-  if (taggedMsg.length) {
+  if (message.length && tags.length) {
     let batch = [
       {
         type: 'put',
@@ -92,6 +90,7 @@ app.post('/post', (req, res) => {
         value: {
           original: message,
           tagged: taggedMsg,
+          media: media || '',
           created: Date.now()
         }
       }
@@ -104,6 +103,7 @@ app.post('/post', (req, res) => {
         value: {
           original: message,
           tagged: taggedMsg,
+          media: media || '',
           created: Date.now()
         }
       })

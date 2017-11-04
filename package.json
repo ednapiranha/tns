@@ -20,9 +20,7 @@
     "body-parser": "^1.18.2",
     "concat-stream": "^1.6.0",
     "express": "^4.16.2",
-    "express-session": "^1.15.6",
     "level": "^2.0.0",
-    "level-session-store": "^2.1.0",
     "nconf": "^0.8.5",
     "pug": "^2.0.0-rc.4",
     "uuid": "^3.1.0"
