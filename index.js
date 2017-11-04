@@ -23,16 +23,29 @@ const server = http.createServer(app)
 server.listen(process.env.PORT || 8000)
 
 app.get('/', (req, res) => {
-  const rs = db.createValueStream({
-    gte: 'message~',
-    lte: 'message~\xff',
-    limit: 50
+  const rs = db.createReadStream({
+    gte: 'feed~',
+    lte: 'feed~\xff',
+    limit: 50,
+    reverse: true
   })
 
+/*
+  const rs = db.createValueStream({
+    gte: 'feed~',
+    lte: 'feed~\xff',
+    limit: 50,
+    reverse: true
+  })
+*/
   rs.pipe(concat((messages) => {
     res.render('index', {
       messages: messages,
       tag: ''
+    })
+
+    messages.map(m => {
+      db.put('feed~' + m.value.created + '~' + m.key.split('~')[1], m.value)
     })
   }))
 
@@ -99,6 +112,16 @@ app.post('/post', (req, res) => {
       {
         type: 'put',
         key: 'message~' + mId + '~' + Date.now(),
+        value: {
+          original: message,
+          tagged: taggedMsg,
+          media: media || '',
+          created: Date.now()
+        }
+      },
+      {
+        type: 'put',
+        key: 'feed~' + Date.now() + '~' + mId,
         value: {
           original: message,
           tagged: taggedMsg,
