@@ -32,19 +32,21 @@ html
 
           for m in messages
             .message
-              time= m.created
-              p!= m.tagged.join('')
-              if m.media.length
+              time
+                a(href='/m/' + m.key.split('~')[1] + '~' + m.key.split('~')[2])= m.value.created
+              p!= m.value.tagged.join('')
+              if m.value.media.length
                 img(src=m.media)
 
         else
           h2 recent
           for m in messages
             .message
-              time= m.created
-              p!= m.tagged.join('')
-              if m.media.length
-                img(src=m.media)
+              time
+                a(href='/m/' + m.key.split('~')[1] + '~' + m.key.split('~')[2])= m.value.created
+              p!= m.value.tagged.join('')
+              if m.value.media.length
+                img(src=m.value.media)
 
     form(method='post', action='/post')
       input(type='text', name='message', placeholder='*TEXT: Whatever you want to post.', required)

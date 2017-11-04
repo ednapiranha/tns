@@ -134,6 +134,14 @@ time {
   background-color: rgba(255, 255, 200, 0.4);
 }
 
+#messages time a {
+  font-size: 1rem;
+  line-height: 1rem;
+  background-color: rgba(255, 200, 200, 0.5);
+  color: #111;
+  padding: 2px;
+}
+
 .message p {
   margin: 2px 0;
   display: block;

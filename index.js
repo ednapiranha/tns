@@ -23,7 +23,7 @@ const server = http.createServer(app)
 server.listen(process.env.PORT || 8000)
 
 app.get('/', (req, res) => {
-  const rs = db.createValueStream({
+  const rs = db.createReadStream({
     gte: 'feed~',
     lte: 'feed~\xff',
     limit: 50,
@@ -43,8 +43,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/tag/:tag', (req, res) => {
-  const tag = req.params.tag.toLowerCase()
-  const rs = db.createValueStream({
+  const tag = req.params.tag.trim().toLowerCase()
+  const rs = db.createReadStream({
     gte: 'tagged~' + tag + '~',
     lte: 'tagged~' + tag + '~\xff',
     limit: 50
@@ -59,6 +59,25 @@ app.get('/tag/:tag', (req, res) => {
 
   rs.on('error', (err) => {
     console.log('Tag page error: ', err)
+  })
+})
+
+app.get('/m/:key', (req, res) => {
+  const key = req.params.key.trim().split('~').reverse().join('~')
+
+  db.get('message~' + key, (err, m) => {
+    if (err) {
+      res.redirect('/')
+    } else {
+      console.log(key)
+      res.render('index', {
+        tag: '',
+        messages: [{
+          key: 'message~' + key,
+          value: m
+        }]
+      })
+    }
   })
 })
 
