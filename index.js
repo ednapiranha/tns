@@ -26,7 +26,8 @@ app.get('/', (req, res) => {
   const rs = db.createValueStream({
     gte: 'message~',
     lte: 'message~\xff',
-    limit: 50
+    limit: 50,
+    reverse: true
   })
 
   rs.pipe(concat((messages) => {
@@ -47,7 +48,8 @@ app.get('/tag/:tag', (req, res) => {
   const rs = db.createValueStream({
     gte: 'tagged~' + tag + '~',
     lte: 'tagged~' + tag + '~\xff',
-    limit: 50
+    limit: 50,
+    reverse: true
   })
 
   rs.pipe(concat((messages) => {
