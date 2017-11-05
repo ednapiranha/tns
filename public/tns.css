@@ -154,6 +154,8 @@ time {
   padding-top: 1.1rem;
   margin: 2px 0;
   display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 #messages img {
