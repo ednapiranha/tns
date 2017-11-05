@@ -91,15 +91,14 @@ app.get('/m/:key', (req, res) => {
       })
       console.log('&&&&&&&&& ', tags)
       const taggedMsg = tags.map((tag, idx) => {
-        const t = tag.tag.trim()
-        if (t.length) {
-          if (t.match(/^http/gi)) {
-            return '<a href="' + t.text + '" class="outlink">' + t.text + '</a>'
+        if (tag.tag.length) {
+          if (tag.tag.match(/^http/gi)) {
+            return '<a href="' + tag.text + '" class="outlink">' + tag.text + '</a>'
           } else {
-            return '<a href="/tag/' + encodeURIComponent(t.tag) + '">' + t.text + '</a>'
+            return '<a href="/tag/' + encodeURIComponent(tag.tag) + '">' + tag.text + '</a>'
           }
         } else {
-          return '<span>' + t.text + '</span>'
+          return '<span>' + tag.text + '</span>'
         }
       })
       console.log('======> ', message, taggedMsg)
