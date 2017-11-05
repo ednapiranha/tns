@@ -108,7 +108,11 @@ app.post('/post', (req, res) => {
 
   const taggedMsg = tags.map((tag, idx) => {
     if (tag.tag.length) {
-      return '<a href="/tag/' + encodeURIComponent(tag.tag) + '">' + tag.text + '</a>'
+      if (tag.tag.match(/^http/gi)) {
+        return '<a href="' + tag.text + '" class="outlink">' + tag.text + '</a>'
+      } else {
+        return '<a href="/tag/' + encodeURIComponent(tag.tag) + '">' + tag.text + '</a>'
+      }
     } else {
       return '<span>' + tag.text + '</span>'
     }

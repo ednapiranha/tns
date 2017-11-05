@@ -1,3 +1,11 @@
+mixin messageDisplay(m)
+  .message
+    time
+      a(href='/m/' + m.key.split('~')[1] + '~' + m.key.split('~')[2])= m.value.created
+    p!= m.value.tagged.join('')
+    if m.value.media.length
+      img(src=m.value.media)
+
 doctype html
 html
   head
@@ -31,22 +39,12 @@ html
           h2= 'tag: ' + tag
 
           for m in messages
-            .message
-              time
-                a(href='/m/' + m.key.split('~')[1] + '~' + m.key.split('~')[2])= m.value.created
-              p!= m.value.tagged.join('')
-              if m.value.media.length
-                img(src=m.value.media)
+            +messageDisplay(m)
 
         else
           h2 recent
           for m in messages
-            .message
-              time
-                a(href='/m/' + m.key.split('~')[1] + '~' + m.key.split('~')[2])= m.value.created
-              p!= m.value.tagged.join('')
-              if m.value.media.length
-                img(src=m.value.media)
+            +messageDisplay(m)
 
     form(method='post', action='/post')
       input(type='text', name='message', placeholder='*TEXT: Whatever you want to post.', required)
