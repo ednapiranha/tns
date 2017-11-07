@@ -18,19 +18,10 @@ html
     #wrapper
       #flappy
         h1 The Non Sequitur
-        span
-        p Welcome to TNS. Here's a random FAQ of questions nobody asked but there are answers for anyway:
-        p What is TNS? It's a one-bit site that you can anonymously post auto-tagged messages. If you select a tagged word, you will potentially see other posts tagged with the same word somewhere in the sentence.
-        p.show
-        p How old is this project? This project is probably older than the time you spent at your first job plus your second job.
-        p What is a good post? Post whatever you're feeling or wanting to rant about. Keep it somewhat classy. I mean, you can swear or talk about toilet humor but don't be a total jackass.
-        p.show
-        p Isn't anonymous bad? No, anonymity isn't bad. Jackasses are just being jerks. As a result, try to be a responsible adult childperson and lower your immediate personal gratification wants and needs. Respect others who are using this site if you want the same respect back. Nobody has time for your bullshit.
-        p You do you.
-        p Anyway, enjoy.
+        p "Elegant quote" - someone nobody's heard of
         p.show
         p.credits Credit for gifs:&#xa0;
-          a(href='https://giphy.com/borrachas1/') https://giphy.com/borrachas1
+          a(href='https://giphy.com/ericaofanderson') https://giphy.com/ericaofanderson
         p.credits Source code:&#xa0;
           a(href='https://github.com/ednapiranha/tns') https://github.com/ednapiranha/tns
 
@@ -42,7 +33,6 @@ html
             +messageDisplay(m)
 
         else
-          h2 recent
           for m in messages
             +messageDisplay(m)
 

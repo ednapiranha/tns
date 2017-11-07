@@ -2,8 +2,8 @@ body {
   background-color: #eee;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 1rem;
-  background-image: url(https://media.giphy.com/media/3ohhwGEpLOqfVy8i0U/giphy.gif);
-  background-size: 100vw;
+  background-image: url(https://media1.giphy.com/media/3oKIPxGt9JNCsZTRPW/giphy.gif);
+  background-size: cover;
   background-attachment: fixed;
 }
 
@@ -14,6 +14,7 @@ h1, h2 {
 h1 {
   font-size: 3.7rem;
   padding: 10px 20px;
+  color: rgba(244, 244, 244, 0.6);
 }
 
 h2 {
@@ -31,9 +32,7 @@ h2 {
 }
 
 #flappy {
-  background-image: url(https://media1.giphy.com/media/l3vR2O5KiD6N7hfVK/giphy.gif);
-  background-attachment: fixed;
-  background-size: 100vw;
+  background-color: rgba(1, 1, 1, 0.85);
   height: 2.5rem;
   position: fixed;
   top: 0;
@@ -62,7 +61,7 @@ h2 {
 }
 
 #flappy p.show {
-  background-image: url(https://media3.giphy.com/media/3ohhwClqgwPGKK3Spi/giphy.gif);
+  background-image: url(https://media.giphy.com/media/l1J9vnEURKOoiIqXe/giphy.gif);
   background-size: 100vw;
   background-attachment: fixed;
   height: 20vh;
@@ -71,8 +70,8 @@ h2 {
 #flappy p {
   margin: 3px 0;
   padding: 10px 20px;
-  color: rgba(1, 1, 1, 0.8);
-  text-shadow: #fff 1px 1px 1px;
+  color: rgba(244, 244, 244, 0.6);
+  text-shadow: #111 1px 1px 1px;
 }
 
 #flappy a {
