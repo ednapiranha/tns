@@ -3,7 +3,7 @@ body {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 1rem;
   background-image: url(https://media1.giphy.com/media/3oKIPxGt9JNCsZTRPW/giphy.gif);
-  background-size: cover;
+  background-size: 100vw;
   background-attachment: fixed;
 }
 
