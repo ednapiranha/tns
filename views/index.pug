@@ -13,11 +13,12 @@ html
     meta(charset='utf-8')
     meta(content='width=device-width, height=device-height, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0', name='viewport')
     meta(content='yes', name='apple-mobile-web-app-capable')
-    <link rel="stylesheet" href="/tns.css">
+    link(rel='stylesheet', href='/tns.css')
   body
     #wrapper
       #flappy
-        h1 The Non Sequitur
+        h1
+          a(href='/') The Non Sequitur
         p "Elegant quote" - someone nobody's heard of
         p.show
         p.credits Credit for gifs:&#xa0;
@@ -39,4 +40,3 @@ html
     form(method='post', action='/post')
       input(type='text', name='message', placeholder='*TEXT: Whatever you want to post.', required)
       input(type='text', name='media', placeholder='URL: Giphy URLs only for now.')
-      button(type='submit') add message
