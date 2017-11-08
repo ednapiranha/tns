@@ -46,6 +46,10 @@ h2 {
   font-size: 1.2rem;
 }
 
+#flappy h1 a {
+  cursor: default;
+}
+
 #flappy span {
   font-size: 1rem;
   color: rgba(240, 15, 150, 0.7);
